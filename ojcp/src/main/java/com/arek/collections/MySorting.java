@@ -7,6 +7,7 @@ import java.util.List;
 public class MySorting {
 
 	public static void main(String[] args) {
+
 		sortNotComparable();
 
 	}
