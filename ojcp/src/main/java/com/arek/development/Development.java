@@ -1,4 +1,4 @@
-package com.arek;
+package com.arek.development;
 
 import java.util.Arrays;
 import java.util.Properties;

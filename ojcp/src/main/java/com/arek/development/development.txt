@@ -1,0 +1,23 @@
+1. B x
+2. B
+3. ABDE x
+4. A
+5. D
+6. C
+
+
+through inheritance does not mean new Foo().protectedVar in A extends Foo class;
+
+7.A
+
+assertions first available in 1.4
+generics in java 5
+
+8.E
+9.CD x
+10.A 
+
+test jar -cf MyJar.jar myApp !
+
+11. C
+12. FG
