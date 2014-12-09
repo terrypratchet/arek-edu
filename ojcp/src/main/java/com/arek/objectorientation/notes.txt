@@ -1,0 +1,33 @@
+the ONLY things that are dynamically
+selected based on the actual object (rather than the reference type) are instance
+methods. Not static methods. Not variables. Only overridden instance methods
+are dynamically invoked based on the real object's type.
+
+Overloaded methods MUST change the argument list.
+■ Overloaded methods CAN change the return type.
+■ Overloaded methods CAN change the access modifier.
+■ Overloaded methods CAN declare new or broader checked exceptions.
+■ A method can be overloaded in the same class or in a subclass. In other words,
+if class A defines a doStuff(int i) method, the subclass B could define a
+doStuff(String s) method without overriding the superclass version that
+takes an int. So two methods with the same name but in different classes
+can still be considered overloaded, if the subclass inherits one version of the
+method and then declares another overloaded version in its class definition.
+
+
+1. BE czy abstrakcyjna musi implemtnowac metody z interfejsu?
+2.E
+3. A
+5. C
+6. C
+7. C
+8. F
+9. A
+10. B
+11. C
+12. C  b h hn x
+13. A
+
+15. D
+4 3 4
+
