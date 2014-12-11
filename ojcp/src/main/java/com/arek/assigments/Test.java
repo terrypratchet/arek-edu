@@ -1,4 +1,4 @@
-package com.arek.assignment;
+package com.arek.assigments;
 
 public class Test {
 

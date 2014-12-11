@@ -12,7 +12,7 @@ public class Numbers {
 
 		
 		System.out.println(i1.hashCode() + " " + i2.hashCode());
-		System.out.println(i1==i2);
+		System.out.println("i1==i2:"+ (i1==i2));
 		System.out.println(new Integer(3)== new Integer(3));
 		
 		
@@ -23,10 +23,13 @@ public class Numbers {
 		Integer i6 = 1000; //different
 		
 		
-		System.out.println(new Integer(5) == 5);
-		System.out.println( new Integer(6) == new Integer(6));
-		System.out.println( 7 == new Integer(7));
-		System.out.println( 1007 == new Integer(1007));
+		System.out.println( "new Integer(5) == 5:" +(new Integer(5) == 5));
+		System.out.println( "new Integer(6) == new Integer(6):"+(new Integer(6) == new Integer(6)));
+		System.out.println( "7 == new Integer(7):"+ (7 == new Integer(7)));
+		System.out.println( "1007 == new Integer(1007):"+ (1007 == new Integer(1007)));
+		
+		System.out.println("Long.toString(077):" + Long.toString(077));
+		System.out.println("Long.toString(3, 2):" + Long.toString(3, 2));
 		
 		/*
 		 * cache:
@@ -35,6 +38,15 @@ public class Numbers {
 		 * character
 		 * short, integer -128 to 127
 		 */
+		
+		Float f = new Float(3);
+		Double d = new Double(34);
+		
+		f.doubleValue();
+		d.floatValue();
+		d.byteValue();
+		
+		
 	}
 
 }
