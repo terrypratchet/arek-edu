@@ -36,7 +36,8 @@ public class Test {
 		if(new Boolean(true)){ // won't compile using 1.4 or earlier
 			
 		}
-		
+		int i=0;
+		for(int i=0; ;){};
 		
 	}
 
