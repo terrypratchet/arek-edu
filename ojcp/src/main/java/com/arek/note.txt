@@ -1,0 +1,5 @@
+to learn:
+StringBuffer constructor
+printf
+coupling, encapsualtion, cohesion
+inner class - order?
