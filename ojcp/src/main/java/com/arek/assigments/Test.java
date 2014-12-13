@@ -37,7 +37,7 @@ public class Test {
 			
 		}
 		int i=0;
-		for(int i=0; ;){};
+		//for(int i=0; ;){}; // won't compile
 		
 	}
 
