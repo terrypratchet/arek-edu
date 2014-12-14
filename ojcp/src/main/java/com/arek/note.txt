@@ -3,3 +3,4 @@ StringBuffer constructor
 printf
 coupling, encapsualtion, cohesion
 inner class - order?
+garbage collector eligible
