@@ -1,0 +1,50 @@
+when using a compound operator, the expression
+on the right side of the = will always be evaluated fi rst
+
+
+Operator Precedence
+Operators	Precedence
+postfix	expr++ expr--
+unary	++expr --expr +expr -expr ~ !
+multiplicative	* / %
+additive	+ -
+shift	<< >> >>>
+relational	< > <= >= instanceof
+equality	== !=
+bitwise AND	&
+bitwise exclusive OR	^
+bitwise inclusive OR	|
+logical AND	&&
+logical OR	||
+ternary	? :
+assignment	= += -= *= /= %= &= ^= |= <<= >>= >>>=
+
+
+
+
+
+
+
+1.D
+
+2.E ans:D
+F1 not compile
+F2 false
+F3 true
+F4 true
+F5 false
+
+3.E 
+4.G
+
+72 foo425 86foo
+
+5.
+6.C
+7.A
+8.C
+9.CG Ans: CF
+10.C Ans: D
+
+
+

@@ -4,6 +4,9 @@
 4.F
 5.C -A
 6.D
+B +A
+
+What about method with more arguments?
 7B +A
 8.E
 9. A212

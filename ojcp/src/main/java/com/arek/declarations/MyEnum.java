@@ -5,6 +5,10 @@ public enum MyEnum {
 }
 
 class A{
+	
+	enum Numbers{
+		ONE, TWO,
+	}
 	public static void main(String[] args){
 		System.out.println(MyEnum.WHITE);
 		MyEnum en = MyEnum.PURPLE;
