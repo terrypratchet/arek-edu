@@ -17,5 +17,9 @@ class A{
 		case PURPLE:
 			
 		}
+		
+		System.out.println(num);
 	}
+	
+	static Number num;
 }

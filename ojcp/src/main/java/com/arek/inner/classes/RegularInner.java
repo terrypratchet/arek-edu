@@ -6,6 +6,7 @@ public class RegularInner {
 	private String x = "outer variable";
 
 	public strictfp final class Hammer{
+		static final int z = 3; // must be final
 		private String x = "inner variable";
 		private void go(String x){
 			System.out.println("outer x:" + RegularInner.this.x);
@@ -15,6 +16,10 @@ public class RegularInner {
 	}
 	private void createInnerInstance(){
 		new Hammer();
+		
+		
+		final class Hammer{ void x(){} };
+		//class RegularInner{}; // compile error
 	}
 
 

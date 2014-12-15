@@ -8,7 +8,7 @@ class E {
 
 class B extends E{
 	@Override
-	public int a() throws NullPointerException{ // cannot retunr long!
+	public int a() throws NullPointerException{ // cannot retunr long or byte!
 		return 0;
 	}
 }
