@@ -11,7 +11,8 @@ public class Lock {
 			synchronized(lock){
 				System.out.println("czekam...");
 				try {
-					lock.wait(1000);
+					//boolean a= true;while(a){a=a|true; if(!a)throw new InterruptedException();};
+					lock.wait(10000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -34,7 +35,8 @@ public class Lock {
 		A a = testLock.new A();
 		a.start();
 
-
+		try{Thread.sleep(2000);} catch(Exception e){};
+		System.out.println("drugi start..");
 		 testLock.new A().start();
 
 		try {
@@ -42,9 +44,9 @@ public class Lock {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}Thread.yield();
 
-		synchronized(testLock.lock){
+		synchronized(testLock.lock){System.out.println("poobudka1");
 			testLock.lock.notify();
 		}
 
@@ -55,7 +57,7 @@ public class Lock {
 			e.printStackTrace();
 		}
 
-		synchronized(testLock.lock){
+		synchronized(testLock.lock){System.out.println("pobudka");
 			testLock.lock.notify();
 		}
 
