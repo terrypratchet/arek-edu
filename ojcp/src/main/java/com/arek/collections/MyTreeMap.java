@@ -13,6 +13,8 @@ public class MyTreeMap {
 
 		SortedMap head = tMap.headMap("b");
 		System.out.println( head.keySet() );
+		SortedMap tail = tMap.tailMap("b");
+		
 
 
 	}

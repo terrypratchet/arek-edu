@@ -8,6 +8,8 @@ class Fruit{
 		return null;
 	}
 	static void x(){};
+	
+	int i(){return 3;};
 };
 
 class Plum extends Fruit{
@@ -17,7 +19,11 @@ class Plum extends Fruit{
 		return null;
 	}
 	static void x(){};
+	//byte i(){return 3;};
+}
 
+abstract interface Iarek{
+	
 }
 
 

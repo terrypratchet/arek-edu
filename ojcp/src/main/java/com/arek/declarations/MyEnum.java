@@ -1,7 +1,7 @@
 package com.arek.declarations;
 
 public enum MyEnum {
-	PURPLE, WHITE
+	PURPLE, WHITE,
 }
 
 class A{

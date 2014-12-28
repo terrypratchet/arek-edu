@@ -15,7 +15,8 @@ public class Test {
 		System.out.println("zero:" + zero);
 		//char minus = -4; //compile error
 		
-		byte myByte =0;
+		byte myByte =00001;
+		System.out.println("b:" + myByte);
 		myByte++; // implicit cast
 		//myByte = myByte + myByte; //compile error
 		
@@ -38,6 +39,8 @@ public class Test {
 		}
 		int i=0;
 		//for(int i=0; ;){}; // won't compile
+		
+		//float xad= 0.3;
 		
 		byte barek = 0; barek++;
 		char carek = 30000;

@@ -10,7 +10,7 @@ public class Widening {
 		System.out.println("float");
 	}
 	
-	static void y2(long y){
+	static void y(long y){
 		System.out.println("long");
 	}
 	

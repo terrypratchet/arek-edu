@@ -1,8 +1,11 @@
 package com.arek.declarations;
 
-class E {
+class E<T> {
 	public int a(){
 		return 1;
+	}
+	public E e(){
+		return null;
 	}
 }
 

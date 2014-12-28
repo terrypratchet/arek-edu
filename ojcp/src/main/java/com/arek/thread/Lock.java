@@ -35,8 +35,8 @@ public class Lock {
 		A a = testLock.new A();
 		a.start();
 
-		try{Thread.sleep(2000);} catch(Exception e){};
-		System.out.println("drugi start..");
+		//try{Thread.sleep(2000);} catch(Exception e){};
+		//System.out.println("drugi start..");
 		 testLock.new A().start();
 
 		try {

@@ -25,6 +25,7 @@ public class MyArrays {
 		List list = Arrays.asList(arr);
 		//list.add("Zupa");
 		list.set(0, "New");
+		list.add("oj");
 
 		System.out.println("array:"+ Arrays.toString(arr));
 

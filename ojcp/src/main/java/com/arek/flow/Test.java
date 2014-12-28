@@ -27,7 +27,9 @@ public class Test {
 		
 		
 		arek:
-		{System.out.println("Arek"); };
+		{System.out.println("Arek");
+	
+		};
 		
 		cud:
 		for(;;){

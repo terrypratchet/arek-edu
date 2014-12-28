@@ -26,6 +26,10 @@ public class Types<S> {
 		System.out.println("integer " + s);
 	}
 
+	public <T> T sun(T a){
+		return a;
+	}
+	
 
 	public static void main(String[] args) {
 		Types<String> types = new Types<String>();
@@ -33,7 +37,8 @@ public class Types<S> {
 
 		SubTypes st = new SubTypes();
 		st.hej(new Float(4));
-
+		
+		
 
 	}
 
