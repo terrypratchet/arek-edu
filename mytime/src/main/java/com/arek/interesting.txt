@@ -1,0 +1,29 @@
+       private void setGCFCookie(HttpServletResponse response){
+                Cookie cookie = new Cookie("GCF_INFO_SHOWN","true");
+                Calendar cal = new GregorianCalendar();
+                cal.set(Calendar.YEAR,2025);
+                int cookieAge = (int) ((cal.getTimeInMillis()-(new java.util.Date()).getTime())/1000);
+                cookie.setMaxAge(cookieAge);
+                response.addCookie(cookie);
+        }
+
+        
+        mrted.domain.utils.DateTime
+        DateTool.now();
+        
+        
+        
+        
+        
+        
+        
+        ICalHelper
+        
+                private Date setDateInGMTTimeZone(Date date) {
+	                java.util.Calendar dateInGMTTimeZone = new GregorianCalendar();
+	                dateInGMTTimeZone.setTimeZone(java.util.TimeZone.getTimeZone("GMT"));
+	                dateInGMTTimeZone.setTimeInMillis(date.getTime());
+	                return dateInGMTTimeZone.getTime();
+        		}
+
+        

@@ -1,0 +1,6 @@
+http://geography.about.com/od/timeandtimezones/a/gmtutc.htm
+java -Duser.timezone=GMT
+System.setProperty("user.timezone", "EST");
+Rest dto json
+iCal timezone
+jaxb
