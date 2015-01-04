@@ -4,3 +4,8 @@ System.setProperty("user.timezone", "EST");
 Rest dto json
 iCal timezone
 jaxb
+
+http://en.wikipedia.org/wiki/Time_zone
+http://docs.oracle.com/cd/E11882_01/server.112/e10729/ch4datetime.htm#NLSPG258
+https://github.com/mde/timezone-js
+http://www.iana.org/time-zones

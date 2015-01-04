@@ -39,17 +39,23 @@ public class TimeZones {
 		
 		System.out.println("_____________sun - joda: ");
 		for( String tz: sun_joda){
-			System.out.println("" + tz);
+			System.out.print(", " + tz);
 		}
-		
+		System.out.println("");
 		
 		System.out.println("_____________ical - sun: ");
 		for( String tz: ical_sun){
 			System.out.println("" + tz);
 		}
 		
-		testIcal();
-	
+		//testIcal();
+		System.out.println("list of timezones:"+TimeZone.getAvailableIDs().length);
+		TimeZone.setDefault(TimeZone.getTimeZone("CST"));
+		System.out.println("list of timezones:"+TimeZone.getAvailableIDs().length);
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Riyadh89"));
+
+		System.out.println("list of timezones:"+TimeZone.getAvailableIDs().length);
+
 	}
 
 	private static Set<String> jodaZones() {
