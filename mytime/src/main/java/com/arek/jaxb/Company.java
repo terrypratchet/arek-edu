@@ -1,20 +1,19 @@
 package com.arek.jaxb;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 
@@ -24,18 +23,19 @@ public class Company {
 	
 	
 	@XmlElement
-	private Date date;
+	
+	private Date myDate;
 	
 	
 
 
-
+	@JsonProperty("myDate")
 	public Date getMyDate(){
-		return date;
+		return myDate;
 	}
 
 	public void setDate(Date date){
-		this.date = date;
+		this.myDate = date;
 	}
 	public void printAsXml() {
 	    try {
@@ -51,6 +51,42 @@ public class Company {
 	    }
 	}
 	
+	
+	public String printAsJSon(){
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(this);
+			System.out.println("json:" + json);
+			return json;
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Company readJson(String json){
+		System.out.println("json to read: " + json);
+		ObjectMapper mapper = new ObjectMapper();
+		//mapper.readValue(jp, valueType)
+		
+			try {
+				JSONParser jsonParser = new JSONParser();
+				jsonParser.parse(json);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+		return null;
+	}
 
 	
 	
