@@ -1,0 +1,1 @@
+cp /home/wanda/git/arek-edu/ejb/MyWar/target/MyWar.war /opt/jboss/jboss-as-7.1.0.Final/standalone/deployments/
