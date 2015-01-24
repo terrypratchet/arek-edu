@@ -1,0 +1,33 @@
+Server side components:
+1.Session beans
+a)stateless
+b)stateful
+c)singleton
+2.Message-Driver Beans
+
+Not server side component:
+3.Entity Beans
+
+Entity Beans becomes a managed object only when associatd with a construct called EntityManager
+
+
+In the case of EJB, the Component Model defines our interchangeable parts, and the
+Container Services are specialists that perform work upon them. The Specification
+provides:
+
+Dependency injection
+Concurrency
+Instance pooling/caching
+Transactions
+Security
+Timers
+Naming and object stores
+Interoperability
+Lifecycle callbacks
+Interceptors
+Java Enterprise Platform integration
+
+
+
+
+livelocks?
