@@ -31,3 +31,18 @@ Java Enterprise Platform integration
 
 
 livelocks?
+
+
+=============================
+@Resource
+private SessionContext context; // extends EJBContext
+getBusinessObject() = this
+getInvokedBusinessInterface() - remote, local or webservice
+getCallerPrincipal()
+
+
+Stateless Session Bean:
+-does not exist
+-method-read pool
+
+
