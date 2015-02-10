@@ -17,7 +17,6 @@ public class StringBeanTest {
 	
 	public static void main(String[] args) throws NamingException {
 		final Properties env = new Properties();
-		//env.put(Context.INITIAL_CONTEXT_FACTORY, org.jboss.naming.remote.client.InitialContextFactory.class.getName());
 
 		env.put(Context.INITIAL_CONTEXT_FACTORY, org.jboss.naming.remote.client.InitialContextFactory.class.getName());
 		env.put(Context.PROVIDER_URL, "remote://localhost:4447");
@@ -26,8 +25,7 @@ public class StringBeanTest {
 		env.put(Context.SECURITY_CREDENTIALS, "123");
 		
 		env.put("jboss.naming.client.ejb.context", true);
-		//arek
-		//123
+
 		
 		namingContext = new InitialContext(env);
 		
