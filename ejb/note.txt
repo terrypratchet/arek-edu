@@ -45,4 +45,13 @@ Stateless Session Bean:
 -does not exist
 -method-read pool
 
+Local interfaces are available only within the same JVM as the session bean. Invoking
+on a local interface does not copy the parameters or return value. Because of this, local
+interfaces are said to follow what is termed call-by-reference semantics
 
+
+
+Nonapplication exceptions are
+always wrapped, by the Container, in an EJBException . This means that any exception
+you throw that is or extends RuntimeException will be caught by the EJB container and
+wrapped in an EJBException
