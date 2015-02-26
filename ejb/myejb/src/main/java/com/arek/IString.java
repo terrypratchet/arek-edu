@@ -8,4 +8,5 @@ public interface IString {
 	void say(String msg);
 	void appException() throws ArekException;
 	void runtimeException();
+	String getPesel();
 }

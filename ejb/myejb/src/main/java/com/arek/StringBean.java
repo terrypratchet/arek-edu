@@ -18,6 +18,14 @@ public class StringBean implements IString{
 	@Resource
 	private SessionContext context;
 	
+	@Resource
+	private String pesel;
+	
+	
+	public String getPesel() {
+		return pesel;
+	}
+
 	@Override
 	public String concat(String a, String b) {
 		logger.error("returns concat");

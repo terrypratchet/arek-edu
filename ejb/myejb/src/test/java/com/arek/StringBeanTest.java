@@ -38,6 +38,7 @@ public class StringBeanTest {
 		strBean = (IString) namingContext.lookup(JNDI_NAME);
 		System.out.println("result: " + strBean.concat("Ar", "ek"));
 		testException();
+		testResource();
 		}
 		finally{
 			namingContext.close();
@@ -58,6 +59,10 @@ public class StringBeanTest {
 			logger.error(e.getMessage());
 		}
 		*/
+	}
+	
+	private static void testResource(){
+		System.out.println("pesel: " + strBean.getPesel());
 	}
 
 }
