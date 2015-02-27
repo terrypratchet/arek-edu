@@ -1,8 +1,13 @@
 package com.arek;
 
+import java.util.Properties;
+import java.util.concurrent.Future;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 
@@ -62,5 +67,33 @@ public class StringBean implements IString{
 		throw new IllegalArgumentException("runtimeException");
 		
 	}
+
+	@Override
+	public Object getEnv(String name) {
+		return context.lookup(name);
+		
+	}
+
+	@Override
+	public Properties getEnv() {
+		return context.getEnvironment();
+	}
+	
+	@Asynchronous
+	@Override
+	public Future<String> getAsync() {
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return new AsyncResult<String>("Sukces");
+		
+	}
+	
+	
+	
 
 }

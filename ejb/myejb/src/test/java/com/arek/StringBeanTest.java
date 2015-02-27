@@ -1,6 +1,10 @@
 package com.arek;
 
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -37,8 +41,9 @@ public class StringBeanTest {
 		try{
 		strBean = (IString) namingContext.lookup(JNDI_NAME);
 		System.out.println("result: " + strBean.concat("Ar", "ek"));
-		testException();
 		testResource();
+		testException();
+		
 		}
 		finally{
 			namingContext.close();
@@ -63,6 +68,24 @@ public class StringBeanTest {
 	
 	private static void testResource(){
 		System.out.println("pesel: " + strBean.getPesel());
+		System.out.println("pesel2: " +strBean.getEnv("pesel"));
+		//System.out.println("env: " + strBean.getEnv().size());
+	}
+	
+	static void testAsync(){
+		Future<String> resp = strBean.getAsync();
+		try {
+			resp.get(10, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
