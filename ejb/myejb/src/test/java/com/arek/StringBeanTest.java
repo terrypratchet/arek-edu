@@ -43,6 +43,7 @@ public class StringBeanTest {
 		System.out.println("result: " + strBean.concat("Ar", "ek"));
 		testResource();
 		testException();
+		testAsync();
 		
 		}
 		finally{
@@ -74,8 +75,9 @@ public class StringBeanTest {
 	
 	static void testAsync(){
 		Future<String> resp = strBean.getAsync();
+		String text = null;
 		try {
-			resp.get(10, TimeUnit.SECONDS);
+			text = resp.get(10, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,6 +88,7 @@ public class StringBeanTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("response from async: " + text);
 	}
 
 }

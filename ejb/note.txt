@@ -55,3 +55,16 @@ Nonapplication exceptions are
 always wrapped, by the Container, in an EJBException . This means that any exception
 you throw that is or extends RuntimeException will be caught by the EJB container and
 wrapped in an EJBException
+
+
+
+
+Sessin stateful bean
+The container can also move the bean instance from the Method-Ready state to the
+Does Not Exist state if the bean times out. Timeouts are declared at deployment time
+in a vendor-specific manner. When a timeout occurs in the Method-Ready state, the
+container may, but is not required to, call any @PreDestroy callback methods. A stateful
+bean cannot time out while a transaction is in progress.
+
+a bean instance
+may be passivated (and activated) several times in its life, or not at all.
