@@ -4,14 +4,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.PostActivate;
 import javax.ejb.PrePassivate;
-import javax.ejb.Remote;
 import javax.ejb.Stateful;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Stateful(name=FileTransferBean.EJB_NAME)
-@Remote(FileTransferCommonBusiness.class)
+@Stateful ///name=FileTransferBean.EJB_NAME
+//@Remote(FileTransferCommonBusiness.class)
 public class FileTransferBean implements FileTransferCommonBusiness {
 
 	final static Logger logger = LoggerFactory.getLogger(FileTransferBean.class);

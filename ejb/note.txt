@@ -68,3 +68,17 @@ bean cannot time out while a transaction is in progress.
 
 a bean instance
 may be passivated (and activated) several times in its life, or not at all.
+
+When a timeout occurs in the Passivated state,
+any @PreDestroy callback methods are not invoke
+
+Whenever a system exception is thrown by a bean method, the container invalidates
+the EJB object and destroys the bean instance. The bean instance moves directly to the
+Does Not Exist state, and any @PreDestroy call methods are not invoked
+
+A system exception is any unchecked exception not annotated as an @Application
+Exception , including EJBException
+
+
+A client application can remove a bean by
+invoking a business interface method annotated as @Remove .

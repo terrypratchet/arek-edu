@@ -1,5 +1,8 @@
 package com.arek;
 
+import javax.ejb.Remote;
+
+@Remote
 public interface FileTransferCommonBusiness {
 	/**
 	* Makes a directory of the specified name

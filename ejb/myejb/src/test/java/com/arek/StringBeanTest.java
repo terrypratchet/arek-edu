@@ -25,18 +25,7 @@ public class StringBeanTest {
 	private static IString strBean;
 	
 	public static void main(String[] args) throws NamingException {
-		final Properties env = new Properties();
-
-		env.put(Context.INITIAL_CONTEXT_FACTORY, org.jboss.naming.remote.client.InitialContextFactory.class.getName());
-		env.put(Context.PROVIDER_URL, "remote://localhost:4447");
-		
-		env.put(Context.SECURITY_PRINCIPAL, "arek");
-		env.put(Context.SECURITY_CREDENTIALS, "123");
-		
-		env.put("jboss.naming.client.ejb.context", true);
-
-		
-		namingContext = new InitialContext(env);
+		namingContext = ArekContext.getNamingContext();
 		
 		try{
 		strBean = (IString) namingContext.lookup(JNDI_NAME);
@@ -51,6 +40,8 @@ public class StringBeanTest {
 		}		
 
 	}
+
+
 	
 	private static void testException(){
 		try {
