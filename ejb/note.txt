@@ -82,3 +82,17 @@ Exception , including EJBException
 
 A client application can remove a bean by
 invoking a business interface method annotated as @Remove .
+
+
+=======================\
+singleton
+
+In both the stateless and stateful models, the
+specification mandates that only one request may access a backing bean instance at any
+one time. Because each request is represented by an invocation within a single thread,
+this means that SLSB and SFSB implementation classes need not be thread-safe
+
+
+@javax.ejb.Singleton
+@javax.ejb.Startup
+
