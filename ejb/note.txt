@@ -96,3 +96,9 @@ this means that SLSB and SFSB implementation classes need not be thread-safe
 @javax.ejb.Singleton
 @javax.ejb.Startup
 
+
+
+
+===============
+MDB
+JMS is a vendor-neutral API that can be used to access enterprise messaging systems.
