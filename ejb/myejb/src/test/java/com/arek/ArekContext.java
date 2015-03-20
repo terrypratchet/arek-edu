@@ -17,6 +17,8 @@ public class ArekContext {
 		env.put(Context.SECURITY_CREDENTIALS, "123");
 		
 		env.put("jboss.naming.client.ejb.context", true);
+		
+		//env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
 
 		
 		return new InitialContext(env);

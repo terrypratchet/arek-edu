@@ -29,10 +29,17 @@ public class StringBeanTest {
 		
 		try{
 		strBean = (IString) namingContext.lookup(JNDI_NAME);
+		
+		
+		//strBean.say("dfsdf");
+		System.out.println("result: " + strBean.concat("Ar", "ek"));
+		/*
 		System.out.println("result: " + strBean.concat("Ar", "ek"));
 		testResource();
 		testException();
 		testAsync();
+		*/
+		
 		
 		}
 		finally{

@@ -10,6 +10,13 @@ import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +33,13 @@ public class StringBean implements IString{
 	@Resource
 	private String pesel;
 	
+	
+	// use JTA transaction
+	@Resource(mappedName = "java:/JmsXA")
+	private ConnectionFactory connFactory;
+
+	@Resource(mappedName = "java:/queue/MailToSendQueue")
+	private Queue mailQueue;
 	
 	public String getPesel() {
 		return pesel;
@@ -52,8 +66,32 @@ public class StringBean implements IString{
 	}
 
 	@Override
-	public void say(String msg) {
-		logger.info(msg);
+	public void say(String smsg)  {
+		logger.info(smsg);
+		Connection conn = null;
+
+            try {
+				conn = connFactory.createConnection();
+				Session session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);// let JTA handle transaction
+				MessageProducer sender = session.createProducer(mailQueue);
+				ObjectMessage msg = session.createObjectMessage();
+				msg.setStringProperty("accountName", "");
+
+				sender.send(mailQueue, msg);
+			} catch (JMSException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+             finally{
+            	 try {
+					conn.close();
+				} catch (JMSException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+             }
+
+
 		
 	}
 
