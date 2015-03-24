@@ -21,6 +21,8 @@ import javax.jms.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.arek.mdb.ArekQueue;
+
 
 @Stateless
 public class StringBean implements IString{
@@ -75,7 +77,7 @@ public class StringBean implements IString{
 				Session session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);// let JTA handle transaction
 				MessageProducer sender = session.createProducer(mailQueue);
 				ObjectMessage msg = session.createObjectMessage();
-				msg.setStringProperty("accountName", "");
+				msg.setStringProperty(ArekQueue.SECRET_MESSAGE, smsg);
 
 				sender.send(mailQueue, msg);
 			} catch (JMSException e) {

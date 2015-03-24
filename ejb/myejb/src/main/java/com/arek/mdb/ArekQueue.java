@@ -2,6 +2,7 @@ package com.arek.mdb;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
@@ -27,10 +28,19 @@ import org.slf4j.LoggerFactory;
 
 
 public class ArekQueue implements MessageListener {
+	public static final String SECRET_MESSAGE = "zupa";
 	final static Logger logger = LoggerFactory.getLogger(ArekQueue.class);
 
 	public void onMessage(Message message) {
-		logger.info("received message");
+	
+		logger.info("received message " );
+		try {
+			String myMessage = message.getStringProperty(SECRET_MESSAGE);
+			logger.info("Message: " + myMessage);
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

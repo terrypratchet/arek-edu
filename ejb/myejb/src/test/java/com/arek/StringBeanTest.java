@@ -31,8 +31,8 @@ public class StringBeanTest {
 		strBean = (IString) namingContext.lookup(JNDI_NAME);
 		
 		
-		//strBean.say("dfsdf");
-		System.out.println("result: " + strBean.concat("Ar", "ek"));
+		strBean.say("Great success!!!"); // testQueue
+		//System.out.println("result: " + strBean.concat("Ar", "ek"));
 		/*
 		System.out.println("result: " + strBean.concat("Ar", "ek"));
 		testResource();

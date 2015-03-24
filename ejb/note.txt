@@ -102,3 +102,29 @@ this means that SLSB and SFSB implementation classes need not be thread-safe
 ===============
 MDB
 JMS is a vendor-neutral API that can be used to access enterprise messaging systems.
+
+	// use JTA transaction
+	@Resource(mappedName = "java:/JmsXA")
+	private ConnectionFactory connFactory;
+
+	@Resource(mappedName = "java:/queue/MailToSendQueue")
+	private Queue mailQueue;
+	
+@MessageDriven(
+    name = "MailToSendQueue",
+    activationConfig = {
+        @ActivationConfigProperty( propertyName ="destinationType",
+                                   propertyValue="javax.jms.Queue" ),
+
+        @ActivationConfigProperty( propertyName ="destination",
+                                   propertyValue="queue/MailToSendQueue" ),
+
+        @ActivationConfigProperty( propertyName ="acknowledgeMode",
+                                   propertyValue="Auto-acknowledge" ),
+		//see note next to @PoolClass annotation below
+        @ActivationConfigProperty( propertyName="maxSession",
+                                   propertyValue="5")
+    }
+    
+    
+    
