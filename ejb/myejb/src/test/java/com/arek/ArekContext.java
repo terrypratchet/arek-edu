@@ -6,7 +6,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-public class ArekContext {
+import com.arek.security.ISecureSchool;
+
+public class ArekContext{
 	public static Context getNamingContext() throws NamingException {
 		final Properties env = new Properties();
 

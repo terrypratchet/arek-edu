@@ -126,5 +126,10 @@ JMS is a vendor-neutral API that can be used to access enterprise messaging syst
                                    propertyValue="5")
     }
     
+
     
-    
+JNDI
+
+SLSBs and SFSBs views must be available in Global
+JNDI under this syntax:    
+java:global[/app-name]/module-name/bean-name [!FQN]
