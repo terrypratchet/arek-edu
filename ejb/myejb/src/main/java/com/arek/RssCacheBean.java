@@ -19,7 +19,7 @@ import com.arek.security.ISecureSchool;
 public class RssCacheBean implements IRssCacheBean{
 	final static Logger logger = LoggerFactory.getLogger(RssCacheBean.class);
 	
-	//@EJB
+	@EJB
 	private ISecureSchool secure;
 	
 	@Lock(LockType.READ)
@@ -33,6 +33,6 @@ public class RssCacheBean implements IRssCacheBean{
 	@Override
 	public void refresh() {
 		logger.info("refresh");
-		//secure.open();
+		secure.open();
 	}
 }

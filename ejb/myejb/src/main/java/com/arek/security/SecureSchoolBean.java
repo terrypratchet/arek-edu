@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 @DeclareRoles({"arek"})
 @RolesAllowed(
 		{})
-//@Stateless
+@Stateless
 public class SecureSchoolBean implements ISecureSchool{
 
 	final static Logger logger = LoggerFactory.getLogger(SecureSchoolBean.class);
