@@ -11,7 +11,7 @@ public class Grape implements IGrape{
 
 	@Override
 	public void hello() {
-		logger.info("I'm grape");
+		logger.info("I'm a grape");
 		
 	}
 }

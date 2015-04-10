@@ -12,7 +12,7 @@ public class Apricot implements IApricot{
 	
 	@Override
 	public void hello() {
-		logger.info("I'm apricot");
+		logger.info("I'm an apricot");
 	}
 
 }
