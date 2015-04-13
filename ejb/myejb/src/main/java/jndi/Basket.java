@@ -20,6 +20,9 @@ public class Basket implements IBasket{
 	@Resource
 	private SessionContext ejbContext;
 	
+	@Resource(name="ciphersPassphrase")
+	private String passphrase = "defaultPassphrase";
+	
 	@EJB
 	private IApricot apricot;
 	
@@ -38,8 +41,8 @@ public class Basket implements IBasket{
 			InitialContext jndiContext = new InitialContext( );
 			String pesel = (String) jndiContext.lookup("java:comp/env/pesel");
 			logger.info("pesel: " + pesel);
+			logger.info("passphrase:" + passphrase);
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

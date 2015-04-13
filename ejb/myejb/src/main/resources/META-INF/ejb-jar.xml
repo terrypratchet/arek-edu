@@ -26,6 +26,12 @@ http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
 				<env-entry-type>java.lang.String</env-entry-type>
 				<env-entry-value>in my basket</env-entry-value>
 			</env-entry>
+			
+			<env-entry>
+				<env-entry-name>ciphersPassphrase</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>secret password</env-entry-value>
+			</env-entry>			
 
 		</session>
 		
