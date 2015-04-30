@@ -34,13 +34,14 @@ public class ProgrammaticSchedule {
 		schedule.hour("*");
 		schedule.minute("*");
 		schedule.second("15,45");
+		schedule.dayOfMonth(3);
 
 		timerService.createCalendarTimer(schedule);
 		logger.info("manual timer inited");
 
 		for (Timer timer : timerService.getTimers()) {
 			logger.info("timer: " + timer.getNextTimeout());
-			// timer.cancel();
+			timer.cancel();
 		}
 
 	}

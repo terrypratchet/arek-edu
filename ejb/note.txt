@@ -1,3 +1,6 @@
+1Z0-895
+CMT transaction
+
 Server side components:
 1.Session beans
 a)stateless
@@ -133,3 +136,47 @@ JNDI
 SLSBs and SFSBs views must be available in Global
 JNDI under this syntax:    
 java:global[/app-name]/module-name/bean-name [!FQN]
+
+
+
+
+
+
+Timers
+The primary difference between a message-driven bean timer and a stateless
+session bean timer is the way in which they’re initiated: timers are created in response
+to an incoming message or, if the container supports it, from a configuration file.
+
+
+Transactions
+If a system exception or a rollback application exception is thrown by
+a business method, the transaction is automatically rolled bac
+
+When an MDB uses container-managed transactions, the
+message it handles is a part of the transaction, so if the transaction is rolled back, the
+consumption of the message is also rolled back, forcing the JMS provider to redeliver
+the message
+
+
+
+BMT beans must not use the setRollbackOnly() and getRollbackOnly() methods of the
+EJBContext . BMT beans should use the getStatus() and rollback() methods on the
+UserTransaction object to check for rollback and force a rollback, respectively.
+
+
+System
+exceptions include java.lang.RuntimeException and its subclasses
+
+Any RuntimeException not annotated with @Applica
+tionException that is thrown within a business method (for instance, EJBException ,
+NullPointerException , IndexOutOfBoundsException , and so on) is handled by the con-
+tainer automatically and results in a transaction rollbac
+
+When a system exception occurs, the EJB instance is discarded, which means that it is
+dereferenced and garbage-collected
+
+
+When stateful session instances are discarded, subsequent invo-
+cations of the EJB’s methods by the client result in a NoSuchEJBException , which is a
+subclass of RuntimeException
+

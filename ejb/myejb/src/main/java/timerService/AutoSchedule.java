@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 public class AutoSchedule {
 	final static Logger logger = LoggerFactory.getLogger(AutoSchedule.class);
 
-	@Schedule(second = "1,30", minute = "*", hour = "*")
+	@Schedule(second = "1,30", minute = "*", hour = "*", dayOfMonth="1")
 	public void someMethod() {
 		logger.info("Automatic timeout occurred.");
 	}
