@@ -180,3 +180,16 @@ When stateful session instances are discarded, subsequent invo-
 cations of the EJB’s methods by the client result in a NoSuchEJBException , which is a
 subclass of RuntimeException
 
+
+Application exceptions are always delivered directly to the
+client without being repackaged as an EJBException type
+By default, they do not cause
+a transaction to roll back
+
+The @ApplicationException annotation can also be used on subclasses of java.lang.
+RuntimeException and java.rmi.RemoteException . This is useful because you may not
+want a thrown RuntimeException to be wrapped in an EJBException , or you may not
+want a particular subclass of RemoteException to roll back the exception.
+
+
+
