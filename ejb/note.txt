@@ -32,8 +32,93 @@ Java Enterprise Platform integration
 
 
 
+SESSION BEAN COMPONENT CONTRACT
+
+In the case of a stateful session bean, its lifetime is controlled by the client.
+
+A container may also terminate a session bean instance’s life after a deployer-specified time-
+out or as a result of the failure of the server on which the bean instance is running. For this
+reason, a client should be prepared to recreate a new session object if it loses the one it is
+using.
+
+
+
+A container may only passivate a stateful session bean instance when the instance is not in a transaction.
+A container must not passivate a stateful session bean with an extended persistence context unless the
+following conditions are met: [10]
+• All the entities in the persistence context are serializable.
+• The EntityManager is serializable.
+A stateless session bean is never passivated.
+A singleton session bean is never passivated.
+
+
+The SessionBean interface defines four methods: setSessionContext, ejbRemove, ejb-
+Passivate, and ejbActivate.
+The ejbPassivate and ejbActivate
+methods are only called on stateful session bean instances.
+
+A stateful session bean class can optionally implement the javax.ejb.SessionSynchroniza-
+tion interface or annotate methods using the individual @AfterBegin, @BeforeCompletion,
+and @AfterCompletion annotations. The deployment descriptor may also be used to declare the
+individual session synchronization methods. These provide the session bean instances with transaction
+synchronization notifications. The instances can use these notifications, for example, to manage data-
+base data they may cache within transactions—e.g., if the Java Persistence API is not used. A stateful
+session bean class may use either the javax.ejb.SessionSynchronization interface OR the
+session synchronization annotations, but not both
+
+
+
+
+
 
 livelocks?
+
+
+A handle is not a capability, in the security sense, that would automatically grant its holder the right to
+invoke methods on the object. When a reference to a session object is obtained from a handle, and then
+a method on the session object is invoked, the container performs the usual access checks based on the
+caller’s principal.
+
+
+
+
+
+The wasCancelCalled method enables an asynchronous session bean method to check
+whether the client invoked its Future.cancel method. SessionContext.wasCan-
+celCalled only returns true if the cancel method was invoked on the client Future
+object corresponding to the currently executing business method and the mayInterruptI-
+fRunning parameter was set to true.
+
+
+
+The PostConstruct lifecycle callback interceptor methods execute in an unspecified security con-
+text. The PostConstruct lifecycle callback interceptor methods for stateless and stateful session
+beans execute in an unspecified transaction context. The PostConstruct lifecycle callback intercep-
+tor methods for singleton beans execute in a transaction context determined by the bean’s transaction
+management type and any applicable transaction attribute.
+
+
+The PrePassivate and PostActivate lifecycle callback interceptor methods are only called on
+stateful session bean instances.
+
+The PrePassivate and PostActivate lifecycle callback interceptor methods execute in an
+unspecified transaction and security context.
+
+
+
+Session Bean Creation
+The container creates an instance of a session bean as follows. First, the container calls the bean class’s
+newInstance method to create a new session bean instance. Second, the container performs any
+dependency injection as specified by metadata annotations on the bean class or by the deployment
+descriptor. This includes the bean’s SessionContext, if applicable. Third, the container calls the
+PostConstruct lifecycle callback interceptor methods for the bean, if any.
+
+
+If the stateless session bean instance has an ejbCreate method, the container treats the ejbCreate
+method as the instance’s PostConstruct method, and, in this case, the PostConstruct annota-
+tion (or deployment descriptor metadata) can only be applied to the bean’s ejbCreate method.
+
+
 
 
 =============================

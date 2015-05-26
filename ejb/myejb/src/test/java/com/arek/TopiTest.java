@@ -24,6 +24,9 @@ public class TopiTest {
 		final TopicConnectionFactory factory = (TopicConnectionFactory) namingContext
 		.lookup(JNDI_NAME_CONNECTION_FACTORY);
 		
+		
+		
+		
 		// Make a Connection
 		final TopicConnection connection = factory.createTopicConnection();
 		final TopicSession sendSession = connection.createTopicSession(false,
