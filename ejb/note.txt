@@ -118,6 +118,115 @@ If the stateless session bean instance has an ejbCreate method, the container tr
 method as the instance’s PostConstruct method, and, in this case, the PostConstruct annota-
 tion (or deployment descriptor metadata) can only be applied to the bean’s ejbCreate method.
 
+Note that the container never permits multi-threaded
+access to the actual stateful session bean instance
+
+
+The Bean Developer may optionally specify that concurrent client requests to a stateful session bean are
+prohibited. This is done using the @AccessTimeout annotation or access-timeout deployment
+descriptor element with a value of 0. In this case, if a client-invoked business method is in progress on
+an instance when another client-invoked call, from the same or different client, arrives at the same
+instance of a stateful session bean, if the second client is a client of the bean’s business interface or
+no-interface view, the concurrent invocation must result in the second client receiving a
+javax.ejb.ConcurrentAccessException
+
+Transaction Context of Session Bean Methods
+The implementation of a method defined in a session bean’s business interface or component interface
+or no-interface view, a web service method, timeout callback method, or singleton PostCon-
+struct/PreDestroy lifecycle callback interceptor method, is invoked in the scope of a transaction
+determined by the transaction attribute specified in the bean’s metadata annotations or deployment
+descriptor.
+A session bean’s afterBegin and beforeCompletion methods are always called with the same
+transaction context as the business methods executed between the afterBegin and beforeCom-
+pletion methods.
+A session bean’s newInstance, setSessionContext, other dependency injection methods, life
+cycle callback interceptor methods, and afterCompletion methods are called with an unspecified
+transaction context. Refer to section 13.6.5 for how the container executes methods with an unspecified
+transaction context.
+For example, it would be wrong to perform database operations within a stateful session bean’s Post-
+Construct or PreDestroy lifecycle callback interceptor methods and to assume that the opera-
+tions are part of the client’s transaction. The PostConstruct and PreDestroy methods for
+stateful and stateless session beans are not controlled by a transaction attribute becaus
+
+
+Each portable session bean global JNDI name has the following syntax :
+java:global[/<app-name>]/<module-name>/<bean-name>[!<fully-quali-
+fied-interface-name>]
+
+<bean-name> is the ejb-name of the enterprise bean. For enterprise beans defined via annotation, it
+defaults to the unqualified name of the session bean class, unless specified in the contents of the
+Stateless/Stateful/Singleton annotation name() attribute. For enterprise beans defined via
+ejb-jar.xml, it’s specified in the <ejb-name> deployment descriptor element
+
+If FooBean is packaged in fooejb.jar within fooapp.ear , without the use of any deployment
+descriptors, the resulting global JNDI name entries are :
+java:global/fooapp/fooejb/FooBean
+java:global/fooapp/fooejb/FooBean!com.acme.Foo
+java:app/fooejb/FooBean
+java:app/fooejb/FooBean!com.acme.Foo
+java:module/FooBean
+java:module/FooBean!com.acme.Foo
+
+
+Client transaction context does not propagate with an asynchronous method invocation
+
+A session bean instance’s life starts when a client obtains a reference to a stateful session bean
+instance through dependency injection or JNDI lookup, or when the client invokes a cre-
+ate<METHOD> method on the session bean’s home interface
+
+The container may not call the beforeCompletion method if the transaction
+has been marked for rollback (nor does the instance write any cached updates to the database)
+
+
+When the client calls a business method of the bean that has been designated as a Remove
+method, or a remove method on the home or component interface, the container invokes
+PreDestroy lifecycle callback interceptor method(s) (if any) for the bean instance after the
+Remove method completes. [
+
+Note that a container can also invoke the PreDestroy
+method on the instance without a client call to remove the session object after the lifetime of
+the EJB object has expired
+
+
+-- check!!!
+If the Remove method completes successfully or if the Remove
+methods throws an application exception for which retainIfException is not true or if a
+system exception is thrown, session synchronization methods are not called on the bean
+instance. If an application exception is thrown for which retainIfException is true, the
+bean is neither destroyed nor discarded, and session synchronization methods, if any, are called
+on the instance at the end of transaction.
+
+
+
+
+The PostConstruct, PreDestroy, PrePassivate, PostActivate, Init, and/or
+ejbCreate<METHOD>, ejbRemove, ejbPassivate, and ejbActivate methods of
+a session bean with container-managed transaction demarcation execute with an unspecified
+transaction context.
+
+
+The getRollbackOnly and setRollbackOnly methods of the SessionContext
+interface should be used only in the session bean methods that execute in the context of a trans-
+action. The container must throw the java.lang.IllegalStateException if the
+methods are invoked while the instance is not associated with a transaction.
+
+
+The TimerService interface is unavailable to stateful session beans.
+
+
+A RuntimeException that is not an application exception thrown from any method of the session
+bean class (including the business methods and the lifecycle callback interceptor methods invoked by
+the container) results in the transition to the “does not exist” state
+
+
+The following
+scenarios result in the PreDestroy lifecycle callback interceptor method(s) not being called for an
+instance:
+• A crash of the EJB container.
+• A system exception thrown from the instance’s method to the container.
+• A timeout of client inactivity while the instance is in the passive state.
+
+
 
 
 

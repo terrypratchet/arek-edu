@@ -1,10 +1,14 @@
 package com.arek.sessionBeans;
 
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.AccessTimeout;
 import javax.ejb.AfterBegin;
 import javax.ejb.AfterCompletion;
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
 import javax.ejb.BeforeCompletion;
 import javax.ejb.PostActivate;
 import javax.ejb.Remove;
@@ -24,8 +28,21 @@ import org.slf4j.LoggerFactory;
 	A stateful session bean instance is not eligible for timeout while it is associated with a transaction or while it is processing a business method or callback 
  */
 @StatefulTimeout(unit=TimeUnit.SECONDS, value=30)
+/* @AccessTimeout is used to specify the amount of time a stateful session bean request should block
+in the case that it can’t immediately access a bean instance that is already processing a different request
+
+ * In this case, if a client-invoked business method is in progress on
+an instance when another client-invoked call, from the same or different client, arrives at the same
+instance of a stateful session bean, if the second client is a client of the bean’s business interface or
+no-interface view, the concurrent invocation must result in the second client receiving a
+javax.ejb.ConcurrentAccessException [15]
+An @AccessTimeout value of -1 indicates that a concurrent client request will block indefinitely
+until it can proceed.
+
+ */
+@AccessTimeout(unit=TimeUnit.DAYS, value=0)
 @Stateful
-public class StatefulBean {
+public class StatefulBean { // implements SessionSynchronization
 	final static Logger logger = LoggerFactory.getLogger(StatefulBean.class);
 	
 	@PostConstruct
@@ -74,8 +91,8 @@ public class StatefulBean {
 		manually reset its state if a rollback occurred.
 	 */
 	@AfterCompletion
-	private void afterCompletion(){
-		logger.info("hello - @AfterCompletion");
+	private void afterCompletion(boolean status){
+		logger.info("hello - @AfterCompletion " + status);
 	}
 	
 	// A session synchronization method must not be declared as final or static.
@@ -104,6 +121,18 @@ public class StatefulBean {
 	
 	public void someMethod(){
 		logger.info("hello some method");
+	}
+	
+	/**
+	 * A session bean can expose methods with asynchronous client invocation semantics.
+	 */
+	@Asynchronous
+	public Future<Integer> asynch(){
+		/*
+		 * An asynchronous method with return type void must not declare any application exceptions.An asyn-
+chronous method with return type Future<V> is permitted to declare application exceptions.
+		 */
+		return new AsyncResult<Integer>(Integer.valueOf(3));
 	}
 	
 }
