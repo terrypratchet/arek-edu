@@ -580,4 +580,47 @@ The container must ensure that only one thread can be executing an instance at a
 
 
 
+---------------------------------------------
+
+Exceptions
+
+n application exception may not
+be a subclass of the java.rmi.RemoteException. The java.rmi.RemoteException and
+its subclasses are reserved for system exceptions.
+
+
+The javax.ejb.CreateException, javax.ejb.RemoveException, javax.ejb.Fin-
+derException, and subclasses thereof are considered to be application exceptions
+
+An appli-
+cation exception that is an unchecked exception is defined as an application exception by annotating it
+with the ApplicationException metadata annotation, or denoting it in the deployment descriptor
+with the application-exception element.
+
+An application exception does not automatically result in marking the transaction for rollback unless the
+ApplicationException annotation is applied to the exception class and is specified with the
+rollback element value true or the application-exception deployment descriptor element
+for the exception specifies the rollback element as true.
+
+By default, designating an unchecked exception as an application exception also applies to subclasses of
+that exception. The inheriting behavior can be disabled by setting the @ApplicationException
+inherited attribute to false or by setting the inherited element of the applica-
+tion-exception deployment descriptor to false.
+
+A system exception is an exception that is a java.rmi.RemoteException (or one of its sub-
+classes) or a RuntimeException that is not an application exception
+
+
+The container catches a non-application exception; logs it (which can result in alerting the System
+Administrator); and, unless the bean is a message-driven bean, throws the javax.ejb.EJBExcep-
+tion [77] or, if the web service client view is used, the java.rmi.RemoteException
+
+
+
+
+
+
+
+
+
 
