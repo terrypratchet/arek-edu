@@ -386,4 +386,198 @@ want a thrown RuntimeException to be wrapped in an EJBException , or you may not
 want a particular subclass of RemoteException to roll back the exception.
 
 
+--------------
+MDB
+The message-driven bean class must implement the appropriate message listener interface for the mes-
+saging type
+
+The message-driven bean class’s implementation of the javax.jms.MessageListener
+interface distinguishes the message-driven bean as a JMS message-driven bean.
+
+A bean’s message listener interface may define more than one message listener method. If the
+message listener interface contains more than one method, it is the resource adapter that
+determines which method is invoked.
+
+If a dependency on
+the MessageDrivenContext is declared, or if the bean class implements the optional Mes-
+sageDrivenBean interface (see Section 5.4.6), the MessageDrivenContext is also injected at
+this time. If dependency injection fails, the bean instance is discard
+
+MessageDrivenContext Interface:
+-setRollbackOnly (CMT)
+-getRollbackOnly (CMT)
+
+-getUserTransaction (BMT)
+
+-getTimerService
+-getCallerPrincipal
+-isCallerInRole
+-getEjbHome
+-getLocalHome
+-lookup (env entries in JNDI)
+-getContextData (interceptor/werbservice context)
+	
+MDB lifecycle callback interceptor methods (on bean class on seperate interceptor class)
+-PostConstruct
+-PreDestroy
+
+
+
+
+
+The Optional MessageDrivenBean Interface
+-setMessageDrivenContext
+-ejbRemove (PreDestroy can be applied only on this method when this interface is used)
+
+
+creation:
+newInstance()
+injects MessageDrivenContext if applicable
+dependency injection
+PostConstruct
+
+The container serializes calls to each message-driven bean instance.
+
+A container allows many instances of a message-driven bean class to be executing concurrently
+
+
+
+
+either the REQUIRED or the NOT_SUPPORTED
+transaction attribute must be used for the message listener methods, and
+either the REQUIRED, REQUIRES_NEW, or the NOT_SUPPORTED
+transaction attribute for timeout
+callback method
+
+
+
+When a message-driven bean using bean-managed transaction demarcation uses the javax.trans-
+action.UserTransaction interface to demarcate transactions, the message receipt that causes
+the bean to be invoked is not part of the transaction. If the message receipt is to be part of the transac-
+tion, container-managed transaction demarcation with the REQUIRED transaction attribute must be
+used.
+
+The Bean Provider may provide information to the Deployer about the configuration of the mes-
+sage-driven bean in its operational environment. (activationConfig)
+
+JMS message-driven beans should not attempt to use the JMS API for message acknowledgment. Mes-
+sage acknowledgment is automatically handled by the container.
+If the message-driven bean uses con-
+tainer-managed transaction demarcation, message acknowledgment is handled automatically as a part of
+the transaction commit
+If bean-managed transaction demarcation is used, the message receipt cannot be
+part of the bean-managed transaction, and, in this case, the receipt is acknowledged by the container
+
+AUTO_ACKNOWLEDGE semantics or DUPS_OK_ACKNOWLEDGE
+AUTO -default
+
+The Bean Provider may declare the JMS message selector
+Message Selectors for JMS Message-Driven Beans
+@MessageDriven(activationConfig={
+@ActivationConfigProperty(
+propertyName=”messageSelector”,
+propertyValue=”JMSType = ‘car’ AND color = ‘blue’ and weight
+> 2500”)})
+
+
+It is the responsibility of the Deployer to associate the message-driven bean with a destination
+or endpoint.
+
+
+A JMS message-driven bean is associated with a JMS Destination (Queue or Topic) when the bean is
+deployed in the container. It is the responsibility of the Deployer to associate the message-driven bean
+with a Queue or Topic.
+
+
+
+
+
+The Bean Provider may provide advice to the Deployer as to whether a message-driven bean is intended
+to be associated with a queue or a topic by using the activationConfig element of the Mes-
+sageDriven annotation or by using the activation-config-property deployment descrip-
+tor element
+
+If the message-driven bean is intended to be used with a topic, the Bean Provider may further indicate
+whether a durable or non-durable subscription should be used
+
+subscriptionDurability: Durable, NonDurable (default)
+ 
+Durable topic subscriptions, as well as queues, ensure that messages are not missed even if the
+EJB server is not runnin
+
+
+
+If a non-durable topic subscription is used, it is the container’s responsibility to make sure that
+the message driven bean subscription is active (i.e., that there is a message driven bean avail-
+able to service the message) in order to ensure that messages are not missed as long as the EJB
+server is running
+
+The Deployer should avoid associating more than one message-driven bean with the same JMS Queue.
+If there are multiple JMS consumers for a queue, JMS does not define how messages are distribued
+between the queue receivers.
+
+
+--------------------
+Exceptions
+A message-driven bean’s message listener method must not throw the java.rmi.RemoteExcep-
+tion.
+Message-driven beans should not, in general, throw RuntimeExceptions.
+
+A RuntimeException that is not an application exception thrown from any method of the mes-
+sage-driven bean class (including a message listener method and the callbacks invoked by the container)
+results in the transition to the “does not exist” state
+
+If a message-driven bean uses bean-managed trans-
+action demarcation and throws a RuntimeException, the container should not acknowledge the
+message
+
+
+
+
+
+
+The following scenarios result in
+the PreDestroy callback method not being called on an instance:
+• A crash of the EJB container.
+• A system exception thrown from the instance’s method to the container.
+
+
+
+JMSReplyTo?
+
+
+Operations Allowed in the Methods of a Message-Driven Bean
+rewrite from book to your note
+
+
+The class must implement, directly or indirectly, the message listener interface required by the
+messaging type that it supports or the methods of the message listener interface. In the case of
+JMS, this is the javax.jms.MessageListener interface
+
+The message-driven bean class may have superclasses and/or superinterfaces. If the message-driven
+bean has superclasses, the methods of the message listener interface, lifecycle callback interceptor
+methods, timeout callback methods, the ejbCreate method, and the methods of the Mes-
+sageDrivenBean interface may be defined in the message-driven bean class or in any of its super-
+classes. A message-driven bean class must not have a superclass that is itself a message-driven bean
+class
+
+superclasess????
+======================================
+The Container Provider is responsible for providing the deployment tools, and for managing the mes-
+sage-driven bean instances at runtime.
+
+
+The deployment tools may generate a class that mixes some container-specific code with the mes-
+sage-driven bean class. This code may, for example, help the container to manage the bean instances at
+runtime. Subclassing, delegation, and code generation can be used by the tools.
+
+The Container Provider must support the deployment of a JMS message-driven bean as the consumer of
+a JMS queue or a durable subscription.
+======================
+5.7.4 Non-reentrant Instances
+The container must ensure that only one thread can be executing an instance at any time.
+
+
+
+
 
