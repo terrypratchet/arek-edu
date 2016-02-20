@@ -295,9 +295,9 @@
                         <entry name="queue/test"/>
                         <entry name="java:jboss/exported/jms/queue/test"/>
                     </jms-queue>
-                    <jms-queue name="MailToSendQueue">
-                        <entry name="queue/MailToSendQueue"/>
-                        <entry name="java:jboss/exported/jms/queue/MailToSendQueue"/>
+                    <jms-queue name="MailToSendQueue2">
+                        <entry name="queue/X"/>
+                        <entry name="java:jboss/exported/jms/queue/MailToSendQueue3"/>
                     </jms-queue>
                     
                     <jms-topic name="StatusUpdate">

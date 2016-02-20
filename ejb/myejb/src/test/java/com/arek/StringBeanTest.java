@@ -1,13 +1,12 @@
 package com.arek;
 
-import java.util.Properties;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class StringBeanTest {
 		strBean = (IString) namingContext.lookup(JNDI_NAME);
 		
 		
-		strBean.say("Great success!!!"); // testQueue
+		strBean.say("Great success!!! " + new Date()); // testQueue
 		//System.out.println("result: " + strBean.concat("Ar", "ek"));
 		/*
 		System.out.println("result: " + strBean.concat("Ar", "ek"));

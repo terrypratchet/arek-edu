@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 public class Work implements IWork{
 	final static Logger logger = LoggerFactory.getLogger(Work.class);
 	
-
+	@Interceptors(Auditor.class)
 	@Override
 	public void lunch() {
 		logger.info("lunch....................");

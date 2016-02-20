@@ -584,7 +584,7 @@ The container must ensure that only one thread can be executing an instance at a
 
 Exceptions
 
-n application exception may not
+an application exception may not
 be a subclass of the java.rmi.RemoteException. The java.rmi.RemoteException and
 its subclasses are reserved for system exceptions.
 
@@ -619,8 +619,222 @@ tion [77] or, if the web service client view is used, the java.rmi.RemoteExcepti
 
 
 
+=====================================
+
+Transactions
 
 
 
+Optimistic locking isn’t locking in the traditional sense. Instead,
+we assume that no other client is trying to access the same data at the same time. Then,
+at transaction commit time, we let the database resolve whether the data has been
+altered by another transaction. If it has, we throw an exception and roll back our trans-
+action. In other words, we are being optimistic that the data hasn’t been touched until
+we need to commit
+
+
+@Entity
+public class Account
+@Version
+private Long version
+
+ount entity class is
+updated, the version column is incremented automatically by JPA. When a transaction
+beginning the commit process and business logic has updated the Account , the entity
+manager first checks to see whether the version property of the in-memory Account
+instance matches the version column currently stored in the database. If the versions
+match, then the version property is incremented. If they don’t match, then the entity
+manager throws an exception and the whole transaction rolls back. When the entity
+manager detects that the Account has been updated by another transaction and a con-
+currency error has occurred, it throws the javax.persistence.OptimisticLock-
+Exception and rolls back the transaction.
+
+Programmatic Locking
+The EntityManager interface has a specific lock() method for performing entity locks.
+To use it, you pass in the entity object you want to lock and indicate whether you want
+a read or write lock:
+package javax.persistence;
+public enum LockModeType
+{
+READ,
+WRITE
+}
+public interface EntityManager {
+void lock(Object entity, LockModeType type);
+}
+LockModeType.READ ensures that no dirty and nonrepeatable reads can occur on the
+locked entity. LockModeType.WRITE has the same semantics as READ , but it also forces an
+increment of the entity’s @Version property. To implement thes
+
+
+==================================
+Enterprise Beans Using Bean-Managed Transaction Demarcation
+
+The enterprise bean with bean-managed transaction demarcation must be a session bean or a mes-
+sage-driven bean.
+An instance that starts a transaction must complete the transaction before it starts a new transaction
+
+A stateless session bean instance must commit a transaction before a business method or timeout call-
+back method returns.
+A singleton session bean instance must commit a transaction before a business method or timeout call-
+back method or PostConstruct/PreDestroy lifecycle callback interceptor method returns.
+A message-driven bean instance must commit a transaction before a message listener method or timeout
+callback method returns.
+
+
+
+JMS API in transactions
+The Bean Provider should not make use of the JMS request/reply paradigm (sending of a JMS message,
+followed by the synchronous receipt of a reply to that message) within a single transaction. Because a
+JMS message is typically not delivered to its final destination until the transaction commits, the receipt
+of the reply within the same transaction will not take place.
+
+Because the container manages the transactional enlistment of JMS sessions on behalf of a bean, the
+parameters of the createSession(boolean transacted, int acknowledgeMode), cre-
+ateQueueSession(boolean transacted, int acknowledgeMode) and createTop-
+icSession(boolean transacted, int acknowledgeMode) methods are ignored. It is
+recommended that the Bean Provider specify that a session is transacted, but provide 0 for the value of
+the acknowledgment mode.
+
+A transaction attribute is a value associated with each of the following methods
+• a method of a bean’s business interface
+• a method exposed through the bean class no-interface view
+• a message listener method of a message-driven bean
+• a timeout callback method
+• a session bean’s web service endpoint method
+• a singleton session bean’s PostConstruct/PreDestroy lifecycle callback interceptor
+methods
+
+
+The Application Assembler must not define transaction attributes for an enter-
+prise bean with bean-managed transaction demarcation.
+
+The application assembler is permitted to override the transaction attribute values using the bean’s
+deployment descriptor.
+
+The Deployer is permitted to override or change the values of transaction attributes at deployment time.
+
+
+@TransactionAttribute(SUPPORTS)
+public class SomeClass {
+public void aMethod () {...}
+public void bMethod () {...}
+...
+}
+@Stateless public class ABean extends SomeClass implements A {
+public void aMethod () {...}
+}
+@TransactionAttribute(REQUIRES_NEW)
+public void cMethod () {...}
+...
+Assuming aMethod, bMethod, cMethod are methods of inte
+
+Assuming aMethod, bMethod, cMethod are methods of interface A, their transaction attributes are
+REQUIRED, SUPPORTS, and REQUIRES_NEW respectively.
+
+
+
+If a stateless or singleton session bean instance starts a transaction in a business method or interceptor
+method, it must commit the transaction before the business method (or all its interceptor methods)
+returns.
+
+• Log this as an application error to alert the System Administrator.
+• Roll back the started transaction.
+• If this a stateless session bean, discard the bean instance.
+• Throw the javax.ejb.EJBException
+
+
+If a message-driven bean instance starts a transaction in a message listener method or interceptor
+method, it must commit the transaction before the message listener method (or all its interceptor meth-
+ods) returns
+
+• Log this as an application error to alert the System Administrator.
+• Roll back the started transaction.
+• Discard the instance of the message-driven bean.
+
+If a session bean or message-driven bean instance starts a transaction in a timeout callback method, it
+must commit the transaction before the timeout callback method returns
+
+• Log this as an application error to alert the System Administrator.
+• Roll back the started transaction.
+• If this is a stateless session bean or message-driven bean, discard the instance of the bean.
+
+
+
+
+
+
+
+
+When an instance attempts to start a transaction using the begin method of the javax.transac-
+tion.UserTransaction interface while the instance has not committed the previous transaction,
+the container must throw the javax.transaction.NotSupportedException in the begin
+method.
+
+The container must throw the java.lang.IllegalStateException if an instance of a bean
+with bean-managed transaction demarcation attempts to invoke the setRollbackOnly or
+getRollbackOnly method of the javax.ejb.EJBContext interface
+
+
+
+-------------CMT-----
+
+The container invokes an enterprise bean method whose transaction attribute is set to the
+NOT_SUPPORTED value with an unspecified transaction context.
+
+Handling of getRollbackOnly Method
+The container must handle the EJBContext.getRollbackOnly method invoked from a business
+method executing with the REQUIRED, REQUIRES_NEW, or MANDATORY transaction attribute.
+The container must throw the java.lang.IllegalStateException if the EJBCon-
+text.getRollbackOnly method is invoked from a business method executing with the SUP-
+PORTS, NOT_SUPPORTED, or NEVER transaction attribute.
+
+If an instance of an enterprise bean with container-managed transaction demarcation attempts to invoke
+the getUserTransaction method of the EJBContext interface, the container must throw the
+java.lang.IllegalStateException.
+
+If a session bean class implements the javax.ejb.SessionSynchronization interface or uses
+the session synchronization annotations, the container must invoke the afterBegin, beforeCom-
+pletion, and afterCompletion callbacks on the instance as part of the transaction commit proto-
+col.
+
+Only the NOT_SUPPORTED and REQUIRED transaction attributes may be used for message-driven
+bean message listener methods
+
+JMS
+A transaction must be started before the dequeuing of the JMS message and, hence, before the
+invocation of the message-driven bean’s onMessage method
+
+If the
+onMessage method does not successfully complete or the transaction is rolled back, message
+redelivery semantics apply.
+
+ner must throw and log the java.lang.IllegalStateException if the EJBCon-
+text.setRollbackOnly method is invoked from a message listener method executing with the
+NotSupported transaction attribute
+
+unspecified transaction context
+• The execution of a method of an enterprise bean with container-managed transaction demarca-
+tion for which the value of the transaction attribute is NOT_SUPPORTED, NEVER, or SUP-
+PORTS.
+• The execution of a PostConstruct, PreDestroy, PostActivate, or PrePassi-
+vate callback method of a session bean with container-managed transaction demarcation. [71]
+[71] Except Singleton PostConstruct/PreDestroy methods. See Chapter 4, “Session Bean Component Contract”.
+
+• The execution of a PostConstruct or PreDestroy callback method of a message-driven
+bean with container-managed transaction demarcation. [72]
+
+
+Diamonds
+The EJB specification requires that the container provide support for local diamonds. In a local dia-
+mond, components A, B, C, and D are deployed in the same EJB container.
+The EJB specification does not require an EJB container to support distributed diamond
+
+If the Container Provider chooses not to support distributed diamonds, and if the container can detect
+that a client invocation would lead to a diamond, the container should throw the
+javax.ejb.EJBException
+
+In
+general, the Application Assembler should try to avoid creating unnecessary distributed diamonds.
 
 

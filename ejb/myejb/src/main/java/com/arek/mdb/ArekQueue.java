@@ -10,13 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @MessageDriven(
-	    name = "MailToSendQueue",
+	    name = "MailToSendQueueAA",
 	    activationConfig = {
 	        @ActivationConfigProperty( propertyName ="destinationType",
 	                                   propertyValue="javax.jms.Queue" ),
 
 	        @ActivationConfigProperty( propertyName ="destination",
-	                                   propertyValue="queue/MailToSendQueue" ),
+	                                   propertyValue="queue/X" ),
 
 	        @ActivationConfigProperty( propertyName ="acknowledgeMode",
 	                                   propertyValue="Auto-acknowledge" ),

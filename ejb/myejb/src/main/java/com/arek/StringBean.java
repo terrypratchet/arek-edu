@@ -40,7 +40,10 @@ public class StringBean implements IString{
 	@Resource(mappedName = "java:/JmsXA")
 	private ConnectionFactory connFactory;
 
-	@Resource(mappedName = "java:/queue/MailToSendQueue")
+	@Resource(mappedName = "java:/queue/X")
+	//@Resource(mappedName = "queue/MailToSendQueueBB")
+	//@Resource(name = "queue/X")
+	
 	private Queue mailQueue;
 	
 	public String getPesel() {
