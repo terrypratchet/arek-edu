@@ -6,7 +6,7 @@
 	<groupId>com.arek</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
@@ -38,6 +38,12 @@
                         <artifactId>spring-boot-starter-test</artifactId>
                         <scope>test</scope>
                 </dependency>
+<dependency>
+	<groupId>commons-lang</groupId>
+	<artifactId>commons-lang</artifactId>
+	<version>2.6</version>
+</dependency>
+
         </dependencies>
         
         <build>
@@ -50,4 +56,13 @@
         </build>
         
 
+        <dependencyManagement>
+        	<dependencies>
+        		<dependency>
+        			<groupId>org.apache.commons</groupId>
+        			<artifactId>commons-lang3</artifactId>
+        			<version>2.6</version>
+        		</dependency>
+        	</dependencies>
+        </dependencyManagement>
 </project>
