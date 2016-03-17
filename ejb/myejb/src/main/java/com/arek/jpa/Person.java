@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
@@ -20,6 +21,8 @@ public class Person {
 	@MapKeyColumn(name="default_is_someMap_KEY") // not needed
 	@Column(name="default_is_someMap") // not needed, refers to value column
 	private Map<String, String> someMap = new HashMap<String,String>();
+	
+	private Job job; // no error when Job is annotated with @Embeddable
 
 	public Map<String, String> getSomeMap() {
 		return someMap;
