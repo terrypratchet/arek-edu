@@ -72,8 +72,11 @@ public class SpittleController {
 		return "registerForm";
 	}
 	
+	// http://localhost:8080/spittles/register
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String save(@Valid @ModelAttribute("arekModleAtttribueName") Person arekModleAtttribueName,  Errors  errors){
+	public String save(
+			/* without model attribute the class name will be used*/
+			@Valid @ModelAttribute("arekModleAtttribueName") Person arekModleAtttribueName,  Errors  errors){
 
 		/*
 		 * it’s important

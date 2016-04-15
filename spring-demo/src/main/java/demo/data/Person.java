@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class Person {
-	@Size(min=3)
+	@Size(min=3, message="{firstName.size}") // ValidationMessages.properties
 	@NotNull
 	private String firstName;
 	private String lastName;
@@ -18,7 +18,7 @@ public class Person {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	@Size(min=3)
+	@Size(min=3, message="Password too short")
 	@NotNull
 	private String password;
 	public String getFirstName() {
