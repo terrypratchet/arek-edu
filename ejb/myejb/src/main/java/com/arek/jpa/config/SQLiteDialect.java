@@ -40,14 +40,14 @@ public class SQLiteDialect extends Dialect {
 		registerColumnType(Types.CLOB, "clob");
 		registerColumnType(Types.BOOLEAN, "integer");
 
-		registerFunction("concat", new VarArgsSQLFunction(Hibernate.STRING, "",
+		/*registerFunction("concat", new VarArgsSQLFunction(Hibernate.STRING, "",
 				"||", ""));
 		registerFunction("mod", new SQLFunctionTemplate(Hibernate.INTEGER,
 				"?1 % ?2"));
 		registerFunction("substr", new StandardSQLFunction("substr",
 				Hibernate.STRING));
 		registerFunction("substring", new StandardSQLFunction("substr",
-				Hibernate.STRING));
+				Hibernate.STRING));*/
 	}
 
 	public boolean supportsIdentityColumns() {

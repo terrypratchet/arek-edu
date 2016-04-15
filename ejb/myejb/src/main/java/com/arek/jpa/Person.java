@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 
-@Entity
+//@Entity
 public class Person {
 	@Id
 	private int id;
