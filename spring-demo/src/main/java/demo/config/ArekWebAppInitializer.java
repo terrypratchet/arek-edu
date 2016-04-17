@@ -1,9 +1,17 @@
 package demo.config;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class ArekWebAppInitializer extends
-		AbstractAnnotationConfigDispatcherServletInitializer {
+		AbstractAnnotationConfigDispatcherServletInitializer
+		/*
+		 * This abastract class registers automatically DispatcherServlet and 
+		 * LoaderListener
+		 */
+		{
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
@@ -18,6 +26,12 @@ public class ArekWebAppInitializer extends
 	@Override
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
+	}
+	
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+	registration.setMultipartConfig(
+	new MultipartConfigElement("/tmp/spittr/uploads"));
 	}
 
 }
