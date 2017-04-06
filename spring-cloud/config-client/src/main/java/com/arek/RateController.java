@@ -11,10 +11,15 @@ public class RateController {
 	
 	@Value("${rate}")
 	private String rate;
+
+	@Value("${secret}")
+	private String secret;
 	
 	@RequestMapping
 	public String getRate(Model model){
 		model.addAttribute("rateamount", rate);
+		model.addAttribute("secret", secret);
+
 		return "rateView";
 	}
 }
