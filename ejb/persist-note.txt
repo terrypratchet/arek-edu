@@ -1,0 +1,380 @@
+ROLLBACK
+
+For both transaction-scoped and extended persistence contexts, transaction rollback causes all pre-exist-
+ing managed instances and removed instances [31] to become detached
+
+Optimistic Locking -> Version
+
+All non-relationship fields and properties and all relationships owned by the entity are
+included in version checks [35] .
+
+Depending on the implementation strategy used, it is possible that this excep-
+tion may not be thrown until flush is called or commit time, whichever happens first
+
+
+
+Pessimistic locking
+If a joined
+inheritance strategy is used, or if the entity is otherwise mapped to a secondary table, this entails locking
+the row(s) for the entity instance in the additional table(s)
+
+
+Element collections and relationships owned by the entity that are contained in join tables will be
+locked if the javax.persistence.lock.scope property is specified with a value of
+PessimisticLockScope.EXTENDED
+
+
+ enum LockModeType {
+READ,
+WRITE,
+OPTIMISTIC,
+OPTIMISTIC_FORCE_INCREMENT,
+PESSIMISTIC_READ,
+PESSIMISTIC_WRITE,
+PESSIMISTIC_FORCE_INCREMENT,
+NONE
+
+
+The
+lock mode type values READ and WRITE are synonyms of OPTIMISTIC and
+OPTIMISTIC_FORCE_INCREMENT respectively
+
+
+lock(entity, LockModeType.OPTIMISTIC
+prevent from
+dirty read
+non-repeatable read
+
+
+persistence implementation is not required to support calling lock(OPTIMISTIC) on a non-versioned object
+OPTIMISTIC_FORCE_INCREMENT - must updated version column unless entity is removced
+also not requried support on non version entity
+
+
+The
+lock
+modes
+PESSIMISTIC_READ,
+PESSIMISTIC_WRITE,
+and
+PESSIMISTIC_FORCE_INCREMENT are used to immediately obtain long-term database locks.
+
+The
+lock
+modes
+PESSIMISTIC_READ,
+PESSIMISTIC_WRITE,
+and
+PESSIMISTIC_FORCE_INCREMENT are used to immediately obtain long-term database locks.
+
+lock(entity, LockModeType.PESIMISTIC
+prevent from
+dirty read
+non-repeatable rea
+
+Any such lock must be obtained immediately and retained until transaction T1 completes (commits or
+rolls back).
+
+
+lock must be suppport on both version and non-versioned entity
+
+
+
+When the lock cannot be obtained, and the database locking failure results in transaction-level rollback,
+the provider must throw the PessimisticLockException and ensure that the JTA transaction or
+EntityTransaction has been marked for rollback.
+When the lock cannot be obtained, and the database locking failure results in only statement-level roll-
+back, the provider must throw the LockTimeoutException (and must not mark the transaction for
+rollback).
+
+
+
+
+When an application locks an entity with LockModeType.PESSIMISTIC_READ and later updates
+that entity, the lock must be converted to an exclusive lock when the entity is flushed to the database [42] .
+If the lock conversion fails, and the database locking failure results in transaction-level rollback, the
+provider must throw the PessimisticLockException and ensure that the JTA transaction or
+EntityTransaction has been marked for rollback. When the lock conversion fails, and the database lock-
+ing failure results in only statement-level rollback, the provider must throw the LockTimeoutEx-
+ception (and must not mark the transaction for rollback).
+
+
+
+==================================================================
+javax.persistence.lock.timeout // time in milliseconds
+When this hint is not specified, database timeout values are assumed to apply.
+
+Portable applications should not rely on this hint
+
+
+An OptimisticLockException always causes the transaction to be marked for rollback.
+Refreshing objects or reloading objects in a new transaction context and then retrying the transaction is
+a potential response to an OptimisticLockException.
+
+===========================================
+Entity Listeners and Callback Methods
+
+
+
+A lifecycle callback method can be defined on an entity class, a mapped superclass, or an entity
+listener class associated with an entity or mapped superclass
+A single class must not have more than one lifecycle callback method for the same lifecy-
+cle event. The same method may be used for multiple callback event
+Entity listeners are stateless
+Lifecycle callbacks can invoke JNDI, JDBC, JMS, and enterprise beans.
+
+In general, the lifecycle method of a portable application should not invoke EntityMan-
+ager or Query operations, access other entity instances, or modify relationships within the
+same persistence context.
+
+The following annotations designate lifecycle event callback methods of the corresponding types.
+• PrePersist
+• PostPersist
+• PreRemove
+• PostRemove
+• PreUpdate
+• PostUpdate
+• PostLoad
+
+
+@Entity
+@EntityListeners(com.acme.AlertMonitor.class)
+
+
+
+
+
+
+stPersistPetListenerMethod
+postPersistCatListenerMethod
+postPersistCatListener2Method
+postPersistAnimal
+
+
+
+postPersistPetListenerMethod
+postPersistCatListenerMethod
+postPersistCatListener2Method
+postPersistSiameseCatListenerMethod
+postPersistAnimal
+
+ runtime exception thrown by a callback
+method that executes within a transaction causes that transaction to be marked for rollback
+
+
+===============
+Bean validation
+=============================================
+
+
+These lifecycle validation events
+occur immediately after the point at which all the PrePersist, PreUpdate, and PreRemove life-
+cycle callback method invocations respectively have been completed, or immediately after the point at
+which such lifecycle callback methods would have been completed (in the event that such callback
+methods are not present).
+
+
+==================
+Caching
+==================
+Whether the entities and entity-related state of a persistence unit will be cached is determined by the
+value of the shared-cache-mode element of the persistence.xml file
+
+
+
+
+===================
+Query
+
+Query and TypedQuery methods other than the executeUpdate method are not required to be
+invoked within a transaction context, unless a lock mode other than LockModeType.NONE has been
+specified for the query
+
+Runtime exceptions other than the NoResultException, NonUniqueResultException,
+QueryTimeoutException, and LockTimeoutException thrown by the methods of the
+Query and TypedQuery interfaces other than those methods specified below cause the current trans-
+action to be marked for rollback. On database platforms on which a query timeout causes transaction
+rollback, the persistence provider must throw the PersistenceException instead of the Query-
+TimeoutException.
+Runtime exceptions thrown by the following methods of the Query and TypedQuery interfaces do
+not cause the current transaction to be marked for rollback: getParameters, getParameter,
+getParameterValue, getLockMode.
+Runtime exceptions thrown by the methods of the Tuple, TupleElement, and Parameter inter-
+faces do not cause the current transaction to be marked for rollback.
+
+
+
+
+
+
+LockMode
+If
+the
+lock
+mode
+type
+is
+PESSIMISTIC_READ,
+PESSIMISTIC_WRITE,
+or
+PESSIMISTIC_FORCE_INCREMENT, and the query returns scalar data (e.g., the values of entity
+field or properties, including scalar data passed to constructors in the query SELECT clause), the under-
+lying database rows will be locked [49] , but the version columns (if any) for any entities corresponding to
+such scalar data will not be updated unless the entities themselves are also otherwise retrieved and
+updated
+
+
+
+If the lock mode type is OPTIMISTIC or OPTIMISTIC_FORCE_INCREMENT, and the query returns
+scalar data, any entities returned by the query will be locked, but no locking will occur for scalar data
+that does not correspond to the state of any entity instance in the query result.
+
+hints:
+javax.persistence.query.timeout // time in milliseconds
+
+Positional Parameters
+Only positional parameter binding and positional access to result items may be portably used for native
+queries.
+The use of positional parameters is not supported for criteria querie
+
+
+Polymorphic Queries
+
+For example, the following query returns the average salary of all employees, including subtypes of
+Employee, such as Manager and Exempt
+select avg(e.salary) from Employee e where e.salary > 80000
+
+The following query and SqlResultSetMapping metadata illustrates the return of multiple entity
+types and assumes default metadata and column name defaults.
+Query q = em.createNativeQuery(
+"SELECT o.id, o.quantity, o.item, i.id, i.name, i.description "+
+"FROM Order o, Item i " +
+"WHERE (o.quantity > 25) AND (o.item = i.id)",
+"OrderItemResults");
+@SqlResultSetMapping(name="OrderItemResults",
+entities={
+@EntityResult(entityClass=com.acme.Order.class),
+@EntityResult(entityClass=com.acme.Item.class)
+}
+
+-=========
+Exceptions
+===============
+
+PessimisticLockException
+The PessimisticLockException is thrown by the persistence provider when a pessi-
+mistic locking conflict occurs. The current transaction will be marked for rollbac
+
+
+LockTimeoutException
+The LockTimeoutException is thrown by the persistence provider when a pessimistic
+locking conflict occurs that does not result in transaction rollback. Typically this occurs
+because the database uses statement-level rollback when a pessimistic lock cannot be granted
+(and there is no deadlock). The LockTimeoutException does not cause the current trans-
+action to be marked for rollback.
+
+
+
+
+
+JOINS
+Inner Joins (Relationship Joins)
+
+SELECT c FROM Customer c JOIN c.orders o WHERE c.status = 1
+The keyword INNER may optionally be used:
+SELECT c FROM Customer c INNER JOIN c.orders o WHERE c.status = 1
+
+
+This is equivalent to the following query using the earlier IN construct, defined in [7]. It selects those
+customers of status 1 for which at least one order exists:
+SELECT OBJECT(c) FROM Customer c, IN(c.orders) o WHERE c.status = 1
+
+LEFT JOIN and LEFT OUTER JOIN are synonymous. They enable the retrieval of a set of entities
+where matching values in the join condition may be absent.	
+
+
+
+
+
+
+
+The shared-cache-mode whether second-level caching is in effect for the per-
+sistence unit
+
+
+
+Persistence Unit Scope
+An EJB-JAR, WAR, application client jar, or EAR can define a persistence unit.
+
+
+-------351 to be continued
+
+:w
+
+
+An EntityManager instance is associated with a persistence context. A persistence context is a set of
+entity instances in which for any persistent entity identity there is a unique entity instance. Within the
+persistence context, the entity instances and their lifecycle are managed. The EntityManager inter-
+face defines the methods that are used to interact with the persistence context. The EntityManager
+API is used to create and remove persistent entity instances, to find persistent entities by primary key,
+and to query over persistent entities.
+The set of entities that can be managed by a given EntityManager instance is defined by a persis-
+tence unit. A persistence unit defines the set of all classes that are related or grouped by the application,
+and which must be colocated in their mapping to a single database.
+
+
+
+/**
+* Clear the persistence context, causing all managed
+* entities to become detached. Changes made to entities that
+* have not been flushed to the database will not be
+* persisted.
+*/
+public void clear();
+
+
+
+
+
+
+* Remove the given entity from the persistence context, causing
+* a managed entity to become detached. Unflushed changes made
+* to the entity if any (including removal of the entity),
+* will not be synchronized to the database. Entities which
+* previously referenced the detached entity will continue to
+* reference it.
+detach
+
+* Return an object of the specified type to allow access to the
+* provider-specific API
+public <T> T unwrap(Class<T> cls);
+public Object getDelegate();
+
+
+
+/**
+* Close an application-managed entity manager.
+* After the close method has been invoked, all methods
+* on the EntityManager instance and any Query and TypedQuery
+* objects obtained from it will throw the IllegalStateException
+* except for getProperties, getTransaction, and isOpen (which
+* will return false).
+* If this method is called when the entity manager is
+* associated with an active transaction, the persistence
+* context remains managed until the transaction completes.
+* @throws IllegalStateException if the entity manager
+*
+is container-managed
+*/
+public void close();
+
+
+
+The persist, merge, remove, and refresh methods must be invoked within a transaction con-
+text
+
+Runtime exceptions thrown by the methods of the EntityManager interface other than the Lock-
+TimeoutException will cause the current transaction to be marked for rollback.
+
+
+`

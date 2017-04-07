@@ -1,17 +1,20 @@
 package com.arek.jpa;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 
-//@Entity
+@Entity
 public class Person {
 	@Id
 	private int id;
@@ -24,8 +27,19 @@ public class Person {
 	
 	private Job job; // no error when Job is annotated with @Embeddable
 
+	@OneToMany
+	private List<Person> children;
+	
 	public Map<String, String> getSomeMap() {
 		return someMap;
+	}
+
+	public List<Person> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Person> children) {
+		this.children = children;
 	}
 
 	public void setSomeMap(Map<String, String> someMap) {
@@ -55,7 +69,23 @@ public class Person {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	
+	
+	public Pesel getPesel() {
+		return pesel;
+	}
 
+	public void setPesel(Pesel pesel) {
+		this.pesel = pesel;
+	}
+
+
+	@OneToOne(orphanRemoval=false)
+	private Pesel pesel;
+	
+	
+	
 	private String firstName;
 	private String lastName;
 
@@ -63,6 +93,11 @@ public class Person {
 	public String toString() {
 		return "Person [id=" + id + ", firstName=" + firstName + ", lastName="
 				+ lastName + "]";
+	}
+	
+	@PrePersist
+	private void beforePersist(){
+		System.out.println("PrePersist...........");
 	}
 
 }

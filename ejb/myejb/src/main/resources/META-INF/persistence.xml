@@ -1,17 +1,17 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-	version="2.0">
-
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
 	<persistence-unit name="sample">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>com.arek.jpa.Person</class>
 
 		<properties>
-<!-- 			<property name="dialect" value="org.hibernate.dialect.SQLiteDialect" /> -->
-			
+			<!-- <property name="dialect" value="org.hibernate.dialect.SQLiteDialect" 
+				/> -->
+
 			<property name="hibernate.dialect" value="com.arek.jpa.config.SQLiteDialect" />
-			
+
 			<property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite::memory:" />
 			<property name="javax.persistence.jdbc.user" value="" />
@@ -20,6 +20,7 @@
 			<property name="format_sql" value="true" />
 			<property name="hibernate.connection.charSet" value="UTF-8" />
 			<property name="hibernate.hbm2ddl.auto" value="create" />
+			
 		</properties>
 	</persistence-unit>
 
@@ -29,23 +30,26 @@
 	<persistence-unit name="fileDatabase">
 
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-
-		<class>com.arek.jpa.Person</class>
+		<class>com.arek.jpa.lifecycle.World</class>
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		
 
 		<properties>
 
 			<property name="hibernate.dialect" value="com.arek.jpa.config.SQLiteDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.format_sql" value="false" />
+			<property name="hibernate.format_sql" value="true" />
 
 			<property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:arek.db" />
-			
-<property name="javax.persistence.validation.mode" value="none"/>
+
+			<property name="javax.persistence.validation.mode" value="none" /> <!-- AUTO, CALLBACK, NONE -->
+
+
 
 		</properties>
-
+		
 	</persistence-unit>
 
 
