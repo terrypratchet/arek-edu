@@ -3,21 +3,4 @@
 	email = terry@example.com
 [branch]
 	autosetuprebase = always
-[core]
-    autocrlf = false
-[alias]
-    st = status
-    co = checkout
-    ci = commit
-    flog = log --stat --find-renames
-    new = !sh -c 'git log $1@{1}..$1@{0} \"$@\"'
-    rev-count = !git rev-list --all | wc -l
-    sh = !bash --login -i
-[color]
-    branch = auto
-    diff = auto
-    status = auto
-[log]
-    decorate = short
-[merge]
-    tool=meld
+
