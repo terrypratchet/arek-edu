@@ -24,10 +24,23 @@ public class Person {
 	@MapKeyColumn(name="default_is_someMap_KEY") // not needed
 	@Column(name="default_is_someMap") // not needed, refers to value column
 	private Map<String, String> someMap = new HashMap<String,String>();
+
+	@OneToMany
+	private Map<String, Pesel> entityMap = new HashMap<String,Pesel>();
+
 	
 	private Job job; // no error when Job is annotated with @Embeddable
 
-	@OneToMany
+	public Map<String, Pesel> getEntityMap() {
+        return entityMap;
+    }
+
+    public void setEntityMap(Map<String, Pesel> entityMap) {
+        this.entityMap = entityMap;
+    }
+
+
+    @OneToMany
 	private List<Person> children;
 	
 	public Map<String, String> getSomeMap() {
@@ -81,7 +94,7 @@ public class Person {
 	}
 
 
-	@OneToOne(orphanRemoval=false)
+	@OneToOne(orphanRemoval=false) // default
 	private Pesel pesel;
 	
 	

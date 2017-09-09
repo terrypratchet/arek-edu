@@ -339,7 +339,7 @@ LockModeType.PESSIMISTIC_WRITE was requested, but not vice versa
 		
 		JpaTest test = new JpaTest();
 		test.em.getTransaction().begin();
-		//test.create();
+		test.create();
 		//test.find();
 		//test.lock();
 		//test.queries();
@@ -350,7 +350,7 @@ LockModeType.PESSIMISTIC_WRITE was requested, but not vice versa
 		
 		//test.criteriaBuilderSubquery();
 		//test.criteriaBuilderGrouping();
-		test.criteriaBuildeWithNoMetamodel();
+		//test.criteriaBuildeWithNoMetamodel();
 		    
 		//test.concreteClass();
 		//test.joinedInheritance();
